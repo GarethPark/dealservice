@@ -4,7 +4,7 @@ import com.example.dealservice.dtos.CreateDealRequest
 import com.example.dealservice.entities.Deal
 import com.example.dealservice.enums.Currency
 import com.example.dealservice.enums.DealStatus
-import com.example.dealservice.repository.DealRepository
+import com.example.dealservice.repositories.DealRepository
 import com.example.dealservice.service.DealService
 import jakarta.validation.ConstraintViolation
 import org.junit.jupiter.api.Assertions.assertEquals
@@ -15,8 +15,7 @@ import org.mockito.ArgumentMatchers.any
 import org.mockito.Mockito.mock
 import org.mockito.Mockito.verify
 import org.mockito.Mockito.`when`
-import javax.validation.ConstraintViolation
-import javax.validation.Validator
+import javax.xml.validation.Validator
 
 class DealServiceTests {
 
@@ -58,7 +57,7 @@ class DealServiceTests {
         )
 
         // Configure mocks
-        `when`(validator.validate(any())).thenReturn(emptySet<ConstraintViolation<Any>>())
+        //`when`(validator.validate(any())).thenReturn(emptySet<ConstraintViolation<Any>>())
         `when`(dealRepository.save(any(Deal::class.java))).thenReturn(savedDeal)
 
         // when
