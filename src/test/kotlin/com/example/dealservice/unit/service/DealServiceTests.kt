@@ -11,10 +11,12 @@ import org.junit.jupiter.api.Assertions.assertEquals
 import org.junit.jupiter.api.Assertions.assertNotNull
 import org.junit.jupiter.api.BeforeEach
 import org.junit.jupiter.api.Test
+import org.junit.jupiter.api.Assertions.assertThrows
 import org.mockito.ArgumentMatchers.any
 import org.mockito.Mockito.mock
 import org.mockito.Mockito.verify
 import org.mockito.Mockito.`when`
+import java.lang.IllegalArgumentException
 import javax.xml.validation.Validator
 
 class DealServiceTests {
@@ -69,5 +71,26 @@ class DealServiceTests {
 
         // verify interactions
         verify(dealRepository).save(any(Deal::class.java))
+    }
+
+    @Test
+    fun `should thow an exception when creating deals with invalid data`(){
+
+        val createDealRequest = CreateDealRequest(
+            codeName = "",
+            description = "",
+            status = DealStatus.DRAFT,
+            currency = Currency.USD,
+            highlyConfidential = false,
+            exclusivity = false
+        )
+
+        val violation = mock(ConstraintViolation::class.java)
+        `when`(validator.validate(any()))
+
+        assertThrows(IllegalArgumentException::class.java){
+            dealService.createDeal(createDealRequest)
+        }
+
     }
 }

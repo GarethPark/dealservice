@@ -16,6 +16,5 @@ class DealValidator : Validator {
         if (deal.codeName.isBlank()){
             errors.rejectValue("codeName", "deal.codeName.blank", "Deal CodeName cannot be blank")
         }
-        TODO("Not yet implemented")
     }
 }
