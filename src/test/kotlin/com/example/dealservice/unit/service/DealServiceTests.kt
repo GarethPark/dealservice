@@ -29,6 +29,7 @@ class DealServiceTests {
     fun setup() {
         dealRepository = mock()
         validator = mock()
+        
 
         dealService = DealService(
             dealRepository = dealRepository,

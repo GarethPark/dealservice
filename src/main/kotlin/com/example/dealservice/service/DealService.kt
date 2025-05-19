@@ -61,6 +61,11 @@ class DealService (@Autowired private val dealRepository: DealRepository,
                 }
             }
         }
+    
+    }
+
+    fun searchForDealsV2(dealSearchDTO: DealSearchDTO): Page<Deal> {
+
     }
 
     private fun validateDeal(deal: Deal){
