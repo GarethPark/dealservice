@@ -32,7 +32,7 @@ class DealService (@Autowired private val dealRepository: DealRepository,
         return dealRepository.save(deal)
     }
 
-    fun searchDeals(searchRequest: DealSearchRequest): List<Deal> {
+    /*fun searchDeals(searchRequest: DealSearchRequest): List<Deal> {
         val specification = searchRequest.filters.fold(Specification.where(null)) { spec, filter ->
             spec.and(createSpecification(filter))
         }
@@ -62,7 +62,7 @@ class DealService (@Autowired private val dealRepository: DealRepository,
             }
         }
     
-    }
+    }*/
 
     fun searchForDealsV2(dealSearchDTO: DealSearchDTO): Page<Deal> {
         val pageable = PageRequest.of(dealSearchDTO.page, dealSearchDTO.size)
@@ -71,11 +71,23 @@ class DealService (@Autowired private val dealRepository: DealRepository,
             return dealRepository.findAll(pageable)
         }
 
-        val spec = 
+        val spec = convertToSpec(dealSearchDTO.filter).and {root: Root<Deal>, query: CriteriaQuery<*>?, cb: CriteriaBuilder ->
+            dealCriteriaFactory.getPredicate(
+                FilterField.CODE_NAME,
+                cb,
+                dealCriteriaFactory.gethPath(FilterField.CODE_NAME, root),
+                ComparisonOperator.EQ,
+                "TEST_CODENAME"
+            )
+        }
+
+        val deals = dealRepository.findAll(spec, pageable)
+
+        return deals 
     }
 
     fun convertToSpec(filter: FilterGroup): Specification<Deal> = 
-        Specification({ root, query, criteriaBuilder<*>?, cb: CriteriaBuilder ->
+        Specification({ root: Root<Deal>, query: CriteriaQuery<*>?, cb: CriteriaBuilder ->
             val predicates: MutableList<Predicate> = arrayListOf()
 
             if(filter.conditions != null) {

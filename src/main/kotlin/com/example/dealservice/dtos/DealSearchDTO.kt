@@ -7,7 +7,7 @@ data class DealSearchDTO(
 )
 
 data class FilterGroup(
-    val operator: LogicalOperator.AND,
+    val operator: LogicalOperator = LogicalOperator.AND,
     val conditions: List<FilterCondition>? = null,
     val groups: List<FilterGroup>? = null
 )
@@ -22,16 +22,18 @@ enum class LogicalOperator {
     AND, OR
 }
 
-enum class ComparisonOperator {
-    EQ,
-    IN,
-    NOT_NUL
-}
-
-emum FilterField {
+enum class FilterField {
     CODE_NAME,
     STATUS,
     EXCLUSIVITY,
     HIGHLY_CONFIDENTIAL,
     CURRENCY
 }
+
+enum class ComparisonOperator {
+    EQ,
+    IN,
+    NOT_NUL
+}
+
+
