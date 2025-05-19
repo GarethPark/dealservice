@@ -65,8 +65,46 @@ class DealService (@Autowired private val dealRepository: DealRepository,
     }
 
     fun searchForDealsV2(dealSearchDTO: DealSearchDTO): Page<Deal> {
+        val pageable = PageRequest.of(dealSearchDTO.page, dealSearchDTO.size)
+        
+        if (dealSearchDTO.filter == null) {
+            return dealRepository.findAll(pageable)
+        }
 
+        val spec = 
     }
+
+    fun convertToSpec(filter: FilterGroup): Specification<Deal> = 
+        Specification({ root, query, criteriaBuilder<*>?, cb: CriteriaBuilder ->
+            val predicates: MutableList<Predicate> = arrayListOf()
+
+            if(filter.conditions != null) {
+                for (predicate in filter.conditions) {
+                    predicates.add(buildPredicate(predicate, root, cb))
+                }
+            }
+
+            if(filter.groups != null) {
+                for (group in filter.groups) {
+                    convertToSpec(group).toPredicate(root, query, cb) 
+                    ?.apply {predicates.add(this)}
+                }
+            }
+
+            query?.distinct(true)
+
+            return@Specification when (filter.operator) {
+                LogicOperator.AND -> cb.and(*predicates.toTypedArray<Predicate>())
+                LogicOperator.OR -> cb.or(*predicates.toTypedArray<Predicate>())
+            }        
+        })
+    }
+
+    private fun buildPredicate(condition: FilterCondition, root: Root<Deal>, cb: CriteriaBuilder): Predicate {
+        val path: Path<*> = dealCriteriaFactory.gethPath(condition.field, root)
+        return dealCriteriaFactory.getPredicate(condition.field, cb, path, condition.operator, condition.value)
+    }
+
 
     private fun validateDeal(deal: Deal){
         val errors = org.springframework.validation.BeanPropertyBindingResult(deal, "deal")
