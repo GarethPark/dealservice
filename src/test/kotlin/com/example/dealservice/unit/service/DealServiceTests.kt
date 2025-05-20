@@ -1,6 +1,6 @@
 package com.example.dealservice.unit.service
 
-import DealCriteriaFactory
+import com.example.dealservice.repositories.DealCriteriaFactory
 import com.example.dealservice.dtos.CreateDealRequest
 import com.example.dealservice.entities.Deal
 import com.example.dealservice.enums.Currency
@@ -25,15 +25,18 @@ class DealServiceTests {
     private lateinit var dealRepository: DealRepository
     private lateinit var validator: Validator
     private lateinit var dealService: DealService
+    private lateinit var dealCriteriaFactory: DealCriteriaFactory
 
     @BeforeEach
     fun setup() {
         dealRepository = mock()
         validator = mock()
+        dealCriteriaFactory = mock()
         
 
         dealService = DealService(
             dealRepository = dealRepository,
+            dealCriteriaFactory = dealCriteriaFactory
         )
     }
 

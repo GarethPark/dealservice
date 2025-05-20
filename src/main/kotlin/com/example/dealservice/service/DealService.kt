@@ -1,18 +1,22 @@
 package com.example.dealservice.service
 
-import DealCriteriaFactory
+
+import com.example.dealservice.repositories.DealCriteriaFactory
 import com.example.dealservice.dtos.*
 import com.example.dealservice.entities.Deal
 import com.example.dealservice.repositories.DealRepository
 import com.example.dealservice.validators.DealValidator
 import jakarta.persistence.criteria.*
 import org.springframework.beans.factory.annotation.Autowired
+
 import org.springframework.data.domain.Page
 import org.springframework.data.domain.PageRequest
 import org.springframework.data.jpa.domain.Specification
+import org.springframework.stereotype.Service
 
-
-class DealService (@Autowired private val dealRepository: DealRepository,
+@Service
+class DealService (
+    private val dealRepository: DealRepository,
     private val dealCriteriaFactory: DealCriteriaFactory
 ) {
 

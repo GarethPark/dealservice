@@ -29,7 +29,7 @@ enum class FilterField {
 enum class ComparisonOperator {
     EQ,
     IN,
-    NOT_NUL
+    NOT_NULL
 }
 
 enum class LogicalOperator {

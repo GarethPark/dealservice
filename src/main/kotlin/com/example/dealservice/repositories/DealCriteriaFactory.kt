@@ -1,7 +1,7 @@
+package com.example.dealservice.repositories
 
 import org.springframework.stereotype.Component
 import jakarta.persistence.criteria.CriteriaBuilder
-import jakarta.persistence.criteria.CriteriaQuery
 import jakarta.persistence.criteria.Predicate
 import jakarta.persistence.criteria.Root
 import jakarta.persistence.criteria.Path
