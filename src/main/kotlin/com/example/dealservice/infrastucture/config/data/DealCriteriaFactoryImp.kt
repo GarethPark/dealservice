@@ -68,7 +68,7 @@ private fun path(
     root: Root<Deal>
 ): Path<*> {
     return when (field) {
-        FilterField.CODE_NAME -> root.get<String>("region")
+        FilterField.CODE_NAME -> root.get<String>("codename")
         FilterField.STATUS -> root.get<String>("status")
         FilterField.CURRENCY -> root.get<String>("currency")
         FilterField.EXCLUSIVITY -> root.get<String>("exclusivity")
