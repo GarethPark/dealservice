@@ -18,10 +18,6 @@ data class FilterCondition(
     val value: Any? = null
 )
 
-enum class LogicalOperator {
-    AND, OR
-}
-
 enum class FilterField {
     CODE_NAME,
     STATUS,
@@ -36,4 +32,6 @@ enum class ComparisonOperator {
     NOT_NUL
 }
 
-
+enum class LogicalOperator {
+    AND, OR
+}

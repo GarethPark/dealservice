@@ -1,5 +1,6 @@
 package com.example.dealservice.unit.service
 
+import DealCriteriaFactory
 import com.example.dealservice.dtos.CreateDealRequest
 import com.example.dealservice.entities.Deal
 import com.example.dealservice.enums.Currency
@@ -33,7 +34,6 @@ class DealServiceTests {
 
         dealService = DealService(
             dealRepository = dealRepository,
-            validator = validator
         )
     }
 

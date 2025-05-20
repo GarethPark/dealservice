@@ -1,18 +1,19 @@
 package com.example.dealservice.service
 
-import com.example.dealservice.dtos.CreateDealRequest
-import com.example.dealservice.dtos.DealFilter
-import com.example.dealservice.dtos.DealSearchRequest
-import com.example.dealservice.dtos.FilterOperator
+import DealCriteriaFactory
+import com.example.dealservice.dtos.*
 import com.example.dealservice.entities.Deal
 import com.example.dealservice.repositories.DealRepository
 import com.example.dealservice.validators.DealValidator
+import jakarta.persistence.criteria.*
 import org.springframework.beans.factory.annotation.Autowired
+import org.springframework.data.domain.Page
+import org.springframework.data.domain.PageRequest
 import org.springframework.data.jpa.domain.Specification
-import javax.xml.validation.Validator
+
 
 class DealService (@Autowired private val dealRepository: DealRepository,
-    @Autowired private val validator: Validator
+    private val dealCriteriaFactory: DealCriteriaFactory
 ) {
 
     private val dealValidator = DealValidator()
@@ -32,38 +33,6 @@ class DealService (@Autowired private val dealRepository: DealRepository,
         return dealRepository.save(deal)
     }
 
-    /*fun searchDeals(searchRequest: DealSearchRequest): List<Deal> {
-        val specification = searchRequest.filters.fold(Specification.where(null)) { spec, filter ->
-            spec.and(createSpecification(filter))
-        }
-        return dealRepository.findAll(specification)
-    }
-
-    private fun createSpecification(filter: DealFilter): Specification<Deal> {
-        return Specification { root, query, criteriaBuilder ->
-            when (filter.operator) {
-                FilterOperator.EQUALS -> criteriaBuilder.equal(root.get<Any>(filter.field), filter.value)
-                FilterOperator.CONTAINS -> criteriaBuilder.like(
-                    root.get(filter.field).as(String::class.java),
-                    "%${filter.value}%"
-                )
-                FilterOperator.GREATER_THAN -> criteriaBuilder.greaterThan(
-                    root.get(filter.field).as(Comparable::class.java),
-                    filter.value as Comparable<Any>
-                )
-                FilterOperator.LESS_THAN -> criteriaBuilder.lessThan(
-                    root.get(filter.field).as(Comparable::class.java),
-                    filter.value as Comparable<Any>
-                )
-                FilterOperator.IN -> {
-                    val values = (filter.value as List<*>).toTypedArray()
-                    root.get<Any>(filter.field).`in`(*values)
-                }
-            }
-        }
-    
-    }*/
-
     fun searchForDealsV2(dealSearchDTO: DealSearchDTO): Page<Deal> {
         val pageable = PageRequest.of(dealSearchDTO.page, dealSearchDTO.size)
         
@@ -71,11 +40,11 @@ class DealService (@Autowired private val dealRepository: DealRepository,
             return dealRepository.findAll(pageable)
         }
 
-        val spec = convertToSpec(dealSearchDTO.filter).and {root: Root<Deal>, query: CriteriaQuery<*>?, cb: CriteriaBuilder ->
+        val spec = convertToSpec(dealSearchDTO.filter).and { root: Root<Deal>, query: CriteriaQuery<*>?, cb: CriteriaBuilder ->
             dealCriteriaFactory.getPredicate(
                 FilterField.CODE_NAME,
                 cb,
-                dealCriteriaFactory.gethPath(FilterField.CODE_NAME, root),
+                dealCriteriaFactory.getPath(FilterField.CODE_NAME, root),
                 ComparisonOperator.EQ,
                 "TEST_CODENAME"
             )
@@ -86,7 +55,7 @@ class DealService (@Autowired private val dealRepository: DealRepository,
         return deals 
     }
 
-    fun convertToSpec(filter: FilterGroup): Specification<Deal> = 
+    private fun convertToSpec(filter: FilterGroup): Specification<Deal> =
         Specification({ root: Root<Deal>, query: CriteriaQuery<*>?, cb: CriteriaBuilder ->
             val predicates: MutableList<Predicate> = arrayListOf()
 
@@ -106,14 +75,14 @@ class DealService (@Autowired private val dealRepository: DealRepository,
             query?.distinct(true)
 
             return@Specification when (filter.operator) {
-                LogicOperator.AND -> cb.and(*predicates.toTypedArray<Predicate>())
-                LogicOperator.OR -> cb.or(*predicates.toTypedArray<Predicate>())
-            }        
+                LogicalOperator.AND -> cb.and(*predicates.toTypedArray<Predicate>())
+                LogicalOperator.OR -> cb.or(*predicates.toTypedArray<Predicate>())
+            }
         })
-    }
+
 
     private fun buildPredicate(condition: FilterCondition, root: Root<Deal>, cb: CriteriaBuilder): Predicate {
-        val path: Path<*> = dealCriteriaFactory.gethPath(condition.field, root)
+        val path: Path<*> = dealCriteriaFactory.getPath(condition.field, root)
         return dealCriteriaFactory.getPredicate(condition.field, cb, path, condition.operator, condition.value)
     }
 
