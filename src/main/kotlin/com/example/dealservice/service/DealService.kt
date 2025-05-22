@@ -8,6 +8,7 @@ import com.example.dealservice.repositories.DealRepository
 import com.example.dealservice.validators.DealValidator
 import jakarta.persistence.criteria.*
 import org.springframework.beans.factory.annotation.Autowired
+import org.springframework.beans.factory.annotation.Value
 
 import org.springframework.data.domain.Page
 import org.springframework.data.domain.PageRequest
@@ -17,8 +18,9 @@ import org.springframework.stereotype.Service
 @Service
 class DealService (
     private val dealRepository: DealRepository,
-    private val dealCriteriaFactory: DealCriteriaFactory
-) {
+    private val dealCriteriaFactory: DealCriteriaFactory,
+    @Value("100") private val maxPageSize: Int,
+    ) {
 
     private val dealValidator = DealValidator()
     
