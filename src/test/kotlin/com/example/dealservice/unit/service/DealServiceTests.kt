@@ -97,7 +97,7 @@ class DealServiceTests {
     }
 
     @Test
-    fun `should thow an exception when creating deals with invalid data`(){
+    fun `should throw an exception when creating deals with invalid data`(){
 
         val createDealRequest = CreateDealRequest(
             codeName = "",
@@ -107,9 +107,6 @@ class DealServiceTests {
             highlyConfidential = false,
             exclusivity = false
         )
-
-        val violation = mock(ConstraintViolation::class.java)
-        `when`(validator.validate(any()))
 
         assertThrows(IllegalArgumentException::class.java){
             dealService.createDeal(createDealRequest)
@@ -177,6 +174,5 @@ class DealServiceTests {
 
         val deals = dealService.searchForDealsV2(dealSearchDTO)
         assertThat(deals).isNotNull
-
     }
 }
