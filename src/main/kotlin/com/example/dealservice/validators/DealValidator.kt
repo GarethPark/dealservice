@@ -13,8 +13,8 @@ class DealValidator : Validator {
     override fun validate(target: Any, errors: Errors) {
         val deal = target as Deal
 
-        if (deal.codeName.isBlank()){
-            errors.rejectValue("codeName", "deal.codeName.blank", "Deal CodeName cannot be blank")
+        if (deal.codename.isBlank()){
+            errors.rejectValue("codename", "deal.codeName.blank", "Deal CodeName cannot be blank")
         }
     }
 }

@@ -7,5 +7,5 @@ import org.springframework.stereotype.Repository
 
 @Repository
 interface DealRepository : JpaRepository<Deal, Long>, JpaSpecificationExecutor<Deal> {
-    fun findByCodeName(codeName: String): List<Deal>
+    fun findByCodename(codeName: String): List<Deal>
 }

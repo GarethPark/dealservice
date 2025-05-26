@@ -7,7 +7,6 @@ import com.example.dealservice.entities.Deal
 import com.example.dealservice.repositories.DealRepository
 import com.example.dealservice.validators.DealValidator
 import jakarta.persistence.criteria.*
-import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.beans.factory.annotation.Value
 
 import org.springframework.data.domain.Page
@@ -26,11 +25,11 @@ class DealService (
     
     fun createDeal(createDealRequest: CreateDealRequest) : Deal{
         var deal = Deal(
-            codeName = createDealRequest.codeName,
+            codename = createDealRequest.codename,
             description = createDealRequest.description,
             status = createDealRequest.status,
             exclusivity = createDealRequest.exclusivity,
-            highlyConfidential = createDealRequest.highlyConfidential,
+            highlyconfidential = createDealRequest.highlyconfidential,
             currency = createDealRequest.currency
         )
 

@@ -14,22 +14,22 @@ data class Deal (
     @Id
     val id: Long = 0,
 
-    @Column
-    val codeName: String,
+    @Column(name = "codename")
+    val codename: String,
 
-    @Column
+    @Column(name = "description")
     val description: String,
 
-    @Column
+    @Column(name = "status")
     val status: DealStatus,
 
-    @Column
+    @Column(name = "exclusivity")
     val exclusivity: Boolean,
 
-    @Column
-    val highlyConfidential: Boolean,
+    @Column(name = "highlyconfidential")
+    val highlyconfidential: Boolean,
 
-    @Column
+    @Column(name = "currency")
     val currency: com.example.dealservice.enums.Currency
 
 )

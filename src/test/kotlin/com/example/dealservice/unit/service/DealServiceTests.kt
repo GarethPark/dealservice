@@ -10,7 +10,6 @@ import com.example.dealservice.repositories.DealRepository
 import com.example.dealservice.service.DealService
 import jakarta.persistence.criteria.Path
 import jakarta.persistence.criteria.Predicate
-import jakarta.validation.ConstraintViolation
 import org.assertj.core.api.Assertions.assertThat
 import org.junit.jupiter.api.Assertions.assertEquals
 import org.junit.jupiter.api.Assertions.assertNotNull
@@ -63,21 +62,21 @@ class DealServiceTests {
     fun `should create a new deal with valid payload`() {
         // given
         val createDealRequest = CreateDealRequest(
-            codeName = "Project Alpha",
+            codename = "Project Alpha",
             description = "Strategic acquisition deal",
             status = DealStatus.DRAFT,
             exclusivity = true,
-            highlyConfidential = true,
+            highlyconfidential = true,
             currency = Currency.USD
         )
 
         val savedDeal = Deal(
             id = 1L,
-            codeName = createDealRequest.codeName,
+            codename = createDealRequest.codename,
             description = createDealRequest.description,
             status = createDealRequest.status,
             exclusivity = createDealRequest.exclusivity,
-            highlyConfidential = createDealRequest.highlyConfidential,
+            highlyconfidential = createDealRequest.highlyconfidential,
             currency = createDealRequest.currency
         )
 
@@ -100,11 +99,11 @@ class DealServiceTests {
     fun `should throw an exception when creating deals with invalid data`(){
 
         val createDealRequest = CreateDealRequest(
-            codeName = "",
+            codename = "",
             description = "",
             status = DealStatus.DRAFT,
             currency = Currency.USD,
-            highlyConfidential = false,
+            highlyconfidential = false,
             exclusivity = false
         )
 
