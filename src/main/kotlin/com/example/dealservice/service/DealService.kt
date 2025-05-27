@@ -1,6 +1,5 @@
 package com.example.dealservice.service
 
-
 import com.example.dealservice.repositories.DealCriteriaFactory
 import com.example.dealservice.dtos.*
 import com.example.dealservice.entities.Deal
@@ -45,15 +44,17 @@ class DealService (
             return dealRepository.findAll(pageable)
         }
 
-        val spec = convertToSpec(dealSearchDTO.filter).and { root: Root<Deal>, query: CriteriaQuery<*>?, cb: CriteriaBuilder ->
+        val spec = convertToSpec(dealSearchDTO.filter)
+
+            /*.and { root: Root<Deal>, query: CriteriaQuery<*>?, cb: CriteriaBuilder ->
             dealCriteriaFactory.getPredicate(
                 FilterField.CODE_NAME,
                 cb,
                 dealCriteriaFactory.getPath(FilterField.CODE_NAME, root),
                 ComparisonOperator.EQ,
                 "TEST_CODENAME"
-            )
-        }
+            )*/
+
 
         val deals = dealRepository.findAll(spec, pageable)
 
