@@ -6,14 +6,12 @@ metadata:
   labels:
     {{- include "dealservice.labels" . | nindent 4 }}
 spec:
-  host: {{ .Values.openshift.route.host | default (printf "%s.%s" (include "dealservice.fullname" .) .Release.Namespace) }}
   to:
     kind: Service
     name: {{ include "dealservice.fullname" . }}
-    weight: 100
-  {{- if .Values.openshift.route.tls.enabled }}
+  port:
+    targetPort: 8080
   tls:
-    termination: {{ .Values.openshift.route.tls.termination }}
-    insecureEdgeTerminationPolicy: {{ .Values.openshift.route.tls.insecureEdgeTerminationPolicy }}
-  {{- end }}
+    termination: edge
+    insecureEdgeTerminationPolicy: Redirect
 {{- end }} 

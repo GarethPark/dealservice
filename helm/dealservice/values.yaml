@@ -35,7 +35,6 @@ env:
 openshift:
   route:
     enabled: true
-    host: "dealservice-garethpark-dev.apps.rm2.thpm.p1.openshiftapps.com"
     tls:
       enabled: true
       termination: edge
