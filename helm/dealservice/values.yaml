@@ -2,9 +2,9 @@
 replicaCount: 1
 
 image:
-  repository: dealservice
+  repository: default-route-openshift-image-registry.apps.rm2.thpm.p1.openshiftapps.com/garethpark-dev/dealservice
   tag: 0.0.1-SNAPSHOT
-  pullPolicy: IfNotPresent
+  pullPolicy: Always
 
 nameOverride: ""
 fullnameOverride: ""
@@ -35,7 +35,7 @@ env:
 openshift:
   route:
     enabled: true
-    host: ""
+    host: "dealservice-garethpark-dev.apps.rm2.thpm.p1.openshiftapps.com"
     tls:
       enabled: true
       termination: edge
