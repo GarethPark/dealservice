@@ -1,26 +1,20 @@
-pipeline {
-    agent {
-        docker {
-            image 'maven:3.9-eclipse-temurin-17'
-            args '-v $HOME/.m2:/root/.m2'
-        }
-    }
-    
-    environment {
-        MAVEN_OPTS = '-Dmaven.repo.local=/root/.m2/repository'
-    }
-    
-    stages {
-        stage('Build') {
-            steps {
-                sh './mvnw clean install'
+pipeline{
+    agent any
+
+    stages{
+        stage('Build'){
+            steps{
+                sh 'docker build -t dealservice .'
             }
-        }
-        
-        stage('Build Container') {
+        stage('Test'){
             steps {
-                sh './mvnw jib:build'
+                sh 'docker run dealservice:latest ./gradlew test'
+            }
+        stage('Push'){
+            steps{
+                sh 'docker tag dealservice:latest garethpark/dealservice:latest'
+                sh 'garethpark/dealservice:latest'
             }
         }
     }
-} 
+}
