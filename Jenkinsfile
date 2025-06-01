@@ -13,7 +13,7 @@ pipeline{
         stage('Push'){
             steps{
                 sh 'docker tag dealservice:latest garethpark/dealservice:latest'
-                sh 'garethpark/dealservice:latest'
+                sh 'docker push garethpark/dealservice:latest'
             }
         }
     }
