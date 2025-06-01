@@ -127,18 +127,12 @@
 				<artifactId>jib-maven-plugin</artifactId>
 				<version>3.4.0</version>
 				<configuration>
-					<from>
-						<image>eclipse-temurin:17-jre-alpine</image>
-					</from>
 					<to>
-						<image>${project.artifactId}:${project.version}</image>
+						<image>garethpark/dealservice</image>
+						<tags>
+							<tag>latest</tag>
+						</tags>
 					</to>
-					<container>
-						<ports>
-							<port>8080</port>
-						</ports>
-						<mainClass>com.example.dealservice.DealserviceApplicationKt</mainClass>
-					</container>
 				</configuration>
 			</plugin>
 		</plugins>
