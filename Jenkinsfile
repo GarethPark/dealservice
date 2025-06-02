@@ -31,9 +31,15 @@ pipeline {
         stage('Package Helm Chart') {
             steps {
                 dir('./helm/dealservice') {
-                    sh '${HELM_PATH} package .'
+                    sh '''
+                        source ~/.zshrc
+                        /opt/homebrew/bin/helm package .
+                    '''
                     withCredentials([usernamePassword(credentialsId: 'dockerhub-credentials', usernameVariable: 'DOCKER_USERNAME', passwordVariable: 'DOCKER_PASSWORD')]) {
-                        sh '${HELM_PATH} push dealservice-${NEXT_VERSION}.tgz oci://registry-1.docker.io/${DOCKER_USERNAME}'
+                        sh '''
+                            source ~/.zshrc
+                            /opt/homebrew/bin/helm push dealservice-${NEXT_VERSION}.tgz oci://registry-1.docker.io/${DOCKER_USERNAME}
+                        '''
                     }
                 }
             }
