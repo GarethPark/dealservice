@@ -21,6 +21,12 @@ pipeline {
             }
         }
 
+        stage('Check Helm') {
+            steps {
+                sh 'helm version'
+            }
+        }
+
         stage('Package Helm Chart') {
             steps {
                 dir('./helm/dealservice') {
