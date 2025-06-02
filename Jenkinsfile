@@ -4,6 +4,7 @@ pipeline {
     environment {
         CHART_NAME = 'dealservice'
         NEXT_VERSION = '0.0.1'
+        HELM_PATH = '/opt/homebrew/bin/helm'
     }
 
     stages {
@@ -30,9 +31,9 @@ pipeline {
         stage('Package Helm Chart') {
             steps {
                 dir('./helm/dealservice') {
-                    sh 'helm package .'
+                    sh '${HELM_PATH} package .'
                     withCredentials([usernamePassword(credentialsId: 'dockerhub-credentials', usernameVariable: 'DOCKER_USERNAME', passwordVariable: 'DOCKER_PASSWORD')]) {
-                        sh 'helm push dealservice-${NEXT_VERSION}.tgz oci://registry-1.docker.io/${DOCKER_USERNAME}'
+                        sh '${HELM_PATH} push dealservice-${NEXT_VERSION}.tgz oci://registry-1.docker.io/${DOCKER_USERNAME}'
                     }
                 }
             }
