@@ -25,6 +25,6 @@ class DealController(@Autowired private val dealService: DealService) {
         return ResponseEntity.ok(deals)
     }
 
-    @GetMapping("jenkins-test")
+    @GetMapping("/jenkins-test")
     fun jenkinsTest(): String = "Jenkins deploy works"
 } 
