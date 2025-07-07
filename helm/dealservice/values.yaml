@@ -2,8 +2,8 @@
 replicaCount: 1
 
 image:
-  repository: default-route-openshift-image-registry.apps.rm2.thpm.p1.openshiftapps.com/garethpark-dev/dealservice
-  tag: 0.0.1-SNAPSHOT
+  repository: garethpark/dealservice
+  tag: latest
   pullPolicy: Always
 
 nameOverride: ""
