@@ -33,12 +33,12 @@ pipeline {
                 dir('./helm/dealservice') {
                     sh '''
                         source ~/.zshrc
-                        /opt/homebrew/bin/helm package .
+                        /opt/homebrew/bin/helm package . --version ${NEXT_VERSION}
                     '''
                     withCredentials([usernamePassword(credentialsId: 'dockerhub-credentials', usernameVariable: 'DOCKER_USERNAME', passwordVariable: 'DOCKER_PASSWORD')]) {
                         sh '''
                             source ~/.zshrc
-                            /opt/homebrew/bin/helm push dealservice-*.tgz oci://registry-1.docker.io/${DOCKER_USERNAME}
+                            /opt/homebrew/bin/helm push ${CHART_NAME}-${NEXT_VERSION}.tgz oci://registry-1.docker.io/${DOCKER_USERNAME}
                         '''
                     }
                 }
@@ -57,7 +57,7 @@ pipeline {
 
                         # Deploy or upgrade using Helm
                         helm upgrade --install dealservice oci://registry-1.docker.io/garethpark/dealservice \
-                          --version 0.0.1 \
+                          --version ${NEXT_VERSION} \
                           --namespace garethpark-dev \
                           --set image.repository=garethpark/dealservice \
                           --set image.tag=latest
