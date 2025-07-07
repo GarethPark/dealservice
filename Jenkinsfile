@@ -44,5 +44,26 @@ pipeline {
                 }
             }
         }
+
+        stage('Deploy to OpenShift') {
+            steps {
+                withCredentials([string(credentialsId: 'openshift-token', variable: 'OPENSHIFT_TOKEN')]) {
+                    sh '''
+                        # Log in to OpenShift
+                        oc login --token=$OPENSHIFT_TOKEN --server=https://api.rm2.thpm.p1.openshiftapps.com:6443
+
+                        # Set the project/namespace
+                        oc project your-namespace
+
+                        # Deploy or upgrade using Helm
+                        helm upgrade --install dealservice oci://registry-1.docker.io/garethpark/dealservice \
+                          --version 0.0.1 \
+                          --namespace your-namespace \
+                          --set image.repository=garethpark/dealservice \
+                          --set image.tag=latest
+                    '''
+                }
+            }
+        }
     }
 }
