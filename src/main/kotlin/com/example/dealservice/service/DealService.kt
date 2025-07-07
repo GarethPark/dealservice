@@ -45,6 +45,7 @@ class DealService (
         }
 
         val spec = convertToSpec(dealSearchDTO.filter)
+        //test
 
             /*.and { root: Root<Deal>, query: CriteriaQuery<*>?, cb: CriteriaBuilder ->
             dealCriteriaFactory.getPredicate(
@@ -54,7 +55,6 @@ class DealService (
                 ComparisonOperator.EQ,
                 "TEST_CODENAME"
             )*/
-
 
         val deals = dealRepository.findAll(spec, pageable)
 
