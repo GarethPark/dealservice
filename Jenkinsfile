@@ -38,7 +38,7 @@ pipeline {
                     withCredentials([usernamePassword(credentialsId: 'dockerhub-credentials', usernameVariable: 'DOCKER_USERNAME', passwordVariable: 'DOCKER_PASSWORD')]) {
                         sh '''
                             source ~/.zshrc
-                            /opt/homebrew/bin/helm push dealservice-${NEXT_VERSION}.tgz oci://registry-1.docker.io/${DOCKER_USERNAME}
+                            /opt/homebrew/bin/helm push dealservice-*.tgz oci://registry-1.docker.io/${DOCKER_USERNAME}
                         '''
                     }
                 }
