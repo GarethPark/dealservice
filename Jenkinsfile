@@ -5,6 +5,7 @@ pipeline {
         CHART_NAME = 'dealservice'
         NEXT_VERSION = '0.0.1'
         HELM_PATH = '/opt/homebrew/bin/helm'
+        IMAGE_TAG = "${env.BUILD_NUMBER}"
     }
 
     stages {
@@ -17,7 +18,7 @@ pipeline {
         stage('Build Container') {
             steps {
                 withCredentials([usernamePassword(credentialsId: 'dockerhub-credentials', usernameVariable: 'DOCKER_USERNAME', passwordVariable: 'DOCKER_PASSWORD')]) {
-                    sh './mvnw jib:build -Djib.to.auth.username=${DOCKER_USERNAME} -Djib.to.auth.password=${DOCKER_PASSWORD}'
+                    sh "./mvnw jib:build -Djib.to.image=garethpark/dealservice:${IMAGE_TAG} -Djib.to.auth.username=${DOCKER_USERNAME} -Djib.to.auth.password=${DOCKER_PASSWORD}"
                 }
             }
         }
@@ -60,7 +61,7 @@ pipeline {
                           --version ${NEXT_VERSION} \
                           --namespace garethpark-dev \
                           --set image.repository=garethpark/dealservice \
-                          --set image.tag=latest
+                          --set image.tag=${IMAGE_TAG}
                     '''
                 }
             }
