@@ -26,5 +26,5 @@ class DealController(@Autowired private val dealService: DealService) {
     }
 
     @GetMapping("/jenkins-test")
-    fun jenkinsTest(): String = "Jenkins deploy works"
+    fun jenkinsTest(): String = "Jenkins deploy works new endpoint"
 } 
